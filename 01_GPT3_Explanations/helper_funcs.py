@@ -11,16 +11,21 @@ def single_row_to_string(row, style):
     label_map = {"entailment": "Yes",
                  "neutral": "Maybe",
                  "contradiction": "No"}
-    if style=="GPT-3":
+    if style=="GPT-3" or style=="customInstruct":
         return ('Premise: ' + s1 + \
                 '\nHypothesis: ' + s2 + \
                 '\nLabel: ' + label + \
                 '\nExplanation: ' + expl + '\n###\n')
-    else:
+    elif style=="ZhengEtAl":
         return (s1 +\
-           '\nQuestion: Is ' + s2.lower().replace(".", "") +\
-           '?\nAnswer: ' + label_map[label] +\
-           '\nReason: ' + expl + '\n###\n')
+               '\nQuestion: Is ' + s2.lower().replace(".", "") +\
+               '?\nAnswer: ' + label_map[label] +\
+               '\nReason: ' + expl + '\n###\n')
+    elif style=="customInstruct_alt4":
+        return ('Premise: ' + s1 + \
+                '\nHypothesis: ' + s2 + \
+                '\nQuestion: Is the hypothesis true based on the premise?' + \
+                '?\nAnswer: ' + label_map[label] + ', because ' + expl.lower() + '\n###\n')
 
 def prepare_examples(data, size_per_class=4, style="GPT-3", example_indices=False):
     if not example_indices:
@@ -34,16 +39,30 @@ def prepare_examples(data, size_per_class=4, style="GPT-3", example_indices=Fals
         res += [single_row_to_string(row, style=style)]
     if style=="GPT-3":
         return ''.join(res)
-    else:
+    elif style=="ZhengEtAl" or style=="customInstruct_alt4":
         return 'Answer the Question and provide a reason why the answer is correct.\n\n' + ''.join(res)
+    elif style=="customInstruct":
+        alt = 1
+        if alt == 1:
+            return 'Classify into entailment, neutral, or contradiction and justify the decision.\n\n' + ''.join(res)
+        elif alt == 2:
+            return 'Perform natural language inference.\n\n' + ''.join(res)
+        elif alt == 3:
+            return 'Does the hypothesis contradict the premise?\n\n' + ''.join(res)
 
 def create_query(row, style="GPT-3"):
     s1 = row.Sentence1
     s2 = row.Sentence2
-    if style=="GPT-3":
+    if style=="GPT-3" or style=="customInstruct":
         return ('Premise: ' + s1 + \
                 '\nHypothesis: ' + s2 + \
                 '\nLabel: ')
-    return (s1 +\
-           '\nQuestion: Is ' + s2.lower().replace(".", "") +\
-           '?\nAnswer: ')
+    elif style=="ZhengEtAl":
+        return (s1 +\
+            '\nQuestion: Is ' + s2.lower().replace(".", "") +\
+            '?\nAnswer: ')
+    elif style=="customInstruct_alt4":
+        return ('Premise: ' + s1 + \
+                '\nHypothesis: ' + s2 + \
+                '\nQuestion: Is the hypothesis true based on the premise?' + \
+                '\nAnswer: ')
