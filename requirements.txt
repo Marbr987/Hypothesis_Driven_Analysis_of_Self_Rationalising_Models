@@ -5,3 +5,5 @@ matplotlib
 openai
 python-dotenv
 transformers
+spacy
+textacy

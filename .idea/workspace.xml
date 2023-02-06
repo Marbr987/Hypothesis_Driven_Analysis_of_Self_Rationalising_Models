@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="bugfix: Update correct data">
-      <change beforePath="$PROJECT_DIR$/.idea/Code.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Code.iml" afterDir="false" />
+    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="feature: Add new prompts">
+      <change afterPath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/01_GPT3_Explanations/GPT_parameter_optimisation.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/01_GPT3_Explanations/GPT_parameter_optimisation.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/01_GPT3_Explanations/helper_funcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/01_GPT3_Explanations/helper_funcs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Jupyter Notebook" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -25,14 +31,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -47,6 +53,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="bugfix: Update correct data" />
-    <option name="LAST_COMMIT_MESSAGE" value="bugfix: Update correct data" />
+    <MESSAGE value="feature: Add code for preparing GPT-3 prompts" />
+    <MESSAGE value="feature: Add new prompts" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature: Add new prompts" />
   </component>
 </project>
