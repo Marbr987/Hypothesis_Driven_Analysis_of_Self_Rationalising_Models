@@ -7,3 +7,6 @@ python-dotenv
 transformers
 spacy
 textacy
+datetime
+time
+sklearn
