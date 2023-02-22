@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="feature: Evaluate subphrase extraction on 20 random samples">
-      <change afterPath="$PROJECT_DIR$/01_GPT3_Explanations/Produce_GPT3_Explanations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.py" afterDir="false" />
+    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="feature: add script for learning BN parameters">
+      <change afterPath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/01_GPT3_Explanations/Produce_GPT3_Explanations.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/03_Bayesian_Network/Learn_BN_Parameters.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/eSNLI/UNK_freq_15_preproc1_expl_1.train" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/eSNLI/UNK_freq_15_preproc1_expl_1_label.train" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/eSNLI/labels.train" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/eSNLI/preproc1_expl_1.train" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/eSNLI/s1.train" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/eSNLI/s2.train" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/esnli_dev.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/esnli_test.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/esnli_train_1.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Input_Data/e-SNLI/dataset/esnli_train_2.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/01_GPT3_Explanations/Produce_GPT3_Explanations.py" beforeDir="false" afterPath="$PROJECT_DIR$/01_GPT3_Explanations/Produce_GPT3_Explanations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.py" beforeDir="false" afterPath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/03_Bayesian_Network/Learn_BN_Parameters.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/03_Bayesian_Network/Learn_BN_Parameters.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,8 +16,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Python Script" />
         <option value="Jupyter Notebook" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -52,7 +41,7 @@
     &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
   }
 }</component>
-  <component name="RunManager" selected="Python.extract_subphrases">
+  <component name="RunManager" selected="Python.learn_BN_parameters">
     <configuration name="Produce_GPT3_Explanations" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Code" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -95,8 +84,30 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="learn_BN_parameters" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Code" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/03_Bayesian_Network" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.learn_BN_parameters" />
         <item itemvalue="Python.extract_subphrases" />
         <item itemvalue="Python.Produce_GPT3_Explanations" />
       </list>
@@ -121,6 +132,7 @@
     <MESSAGE value="feature: Add notebook for extracting subphrases" />
     <MESSAGE value="feature: Add external script for extract SVO structures" />
     <MESSAGE value="feature: Evaluate subphrase extraction on 20 random samples" />
-    <option name="LAST_COMMIT_MESSAGE" value="feature: Evaluate subphrase extraction on 20 random samples" />
+    <MESSAGE value="feature: add script for learning BN parameters" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature: add script for learning BN parameters" />
   </component>
 </project>

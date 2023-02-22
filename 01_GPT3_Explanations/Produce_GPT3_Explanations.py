@@ -24,7 +24,7 @@ if __name__ == "__main__":
     test = pd.read_csv('../Input_Data/e-SNLI/dataset/esnli_test.csv')
     test = test[test.notnull().apply(all, axis=1)]
 
-    i = 6
+    i = 7
     index_range = [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, dev.shape[0]]
     np.random.seed(index_range[i])
     dev_indices = range(index_range[i-1],index_range[i])
