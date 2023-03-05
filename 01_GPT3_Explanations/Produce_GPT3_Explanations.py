@@ -50,7 +50,7 @@ if __name__ == "__main__":
         )
         labels += [response.choices[0].text.split("\nExplanation: ")[0].strip(),]
         explanations += [response.choices[0].text.split("\nExplanation: ")[1], ]
-        time.sleep(3)
+        time.sleep(4)
     dev_prepared["pred_explanation"] = explanations
     dev_prepared["pred_label"] = labels
     dev_prepared.to_csv('prepared_data/GPT3_explanations' + str(i) + '.csv', sep=';')

@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.neural_network import MLPClassifier
 import matplotlib.pyplot as plt
 import pickle
+import os
 
 def predict_y_from_z(z):
     if len(z.shape) > 1:
@@ -94,6 +95,7 @@ def em_algorithm(clf, y_hat, data, not_nan, iter):
         # E-Step
         z, cur_log_lik = estimate_z_and_log_lik(clf, y_hat, data, not_nan)
         log_lik += [cur_log_lik, ]
+        print(f'Current log likelihood: {cur_log_lik}')
         # M-Step
         for i in range(25):
             clf[i].fit(data[not_nan[:,i],][:,cols[i]], z[not_nan[:,i], i])
@@ -112,8 +114,15 @@ if __name__ == "__main__":
     test = test[test.notnull().apply(all, axis=1)]
 
     #data_prepared = pd.read_pickle("../02_Extract_Subphrases/prepared_data/subphrase_vectors_dev.pkl")
+    amount_training_data = 200
+    max_iter = 10
+    size_hidden_layers = (200, 200, 50, 30)
+    str_size_hidden = '_'.join([str(i) for i in size_hidden_layers])
+    folder_name = 'MLP_Classifiers_' + str(amount_training_data) + 'k_training_' + str(max_iter) + '_iter_' + 'NN_size_' + str_size_hidden
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
     data_prepared = pd.read_csv("../02_Extract_Subphrases/prepared_data/subphrase_vectors_20train.csv", sep=";")
-    for i in np.arange(40,420,20):
+    for i in np.arange(40, amount_training_data + 1, 20):
         cur_data_prepared = pd.read_csv("../02_Extract_Subphrases/prepared_data/subphrase_vectors_" + str(i) + "train.csv", sep=";")
         data_prepared = data_prepared.append(cur_data_prepared)
     original_dataset = train
@@ -132,7 +141,7 @@ if __name__ == "__main__":
     print("Initialise MLP Classifier")
     clf = list()
     for i in range(25):
-        clf += [MLPClassifier(hidden_layer_sizes=(25, 25, 10)), ]
+        clf += [MLPClassifier(hidden_layer_sizes=size_hidden_layers), ]
 
     # Initialise z and y_hat
     print(datetime.datetime.now())
@@ -179,18 +188,18 @@ if __name__ == "__main__":
         clf[i].fit(data[not_nan[:,i],][:,cols[i]], z[not_nan[:,i], i])
 
     # Run EM-algorithm
-    clf, z, log_lik = em_algorithm(clf, y_hat, data, not_nan, iter=20)
+    clf, z, log_lik = em_algorithm(clf, y_hat, data, not_nan, iter=max_iter)
 
     #Plot log likelihood
     plt.plot(log_lik)
     plt.xlabel('Iteration')
     plt.ylabel('Log Likelihood')
     plt.title('Log Likelihood EM-Algorithm')
-    plt.savefig('log_likelihood.pdf')
+    plt.savefig(folder_name + '/log_likelihood.pdf')
 
     # Save MLP classifiers
     for i in range(25):
-        with open('MLP_Classifiers/MLP_Classifier' + str(i) + '.pkl','wb') as f:
+        with open(folder_name + '/MLP_Classifier' + str(i) + '.pkl','wb') as f:
             pickle.dump(clf[i],f)
 
 
