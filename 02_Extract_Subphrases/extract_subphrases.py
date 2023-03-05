@@ -24,9 +24,12 @@ def findLoc(text):
 #%%
 def transform_svo_to_nlp(svos):
     res = list()
-    for svo in svos:
-        res.append([[token for token in nlp(sub_part)] for sub_part in svo])
-    return res
+    if svos != None:
+        for svo in svos:
+            res.append([[token for token in nlp(sub_part)] for sub_part in svo])
+        return res
+    else:
+        return svos
 
 #%%
 def cosine_sim(v1, v2):
@@ -47,16 +50,33 @@ def findClothing(text):
             else:
                 return [token, ]
 
-
 #%%
-def remove_clo_from_svo(clo, svo):
+def remove_clo_loc_from_svo(clo, loc, svo):
     if clo is not None:
         clo = clo.copy()
         svo = svo.copy()
         clo_lemmas = [cur_clo.lemma_ for cur_clo in clo]
         for i in range(len(svo)):
             svo[i][0] = [token for token in svo[i][0] if token.lemma_ not in clo_lemmas]
+    if loc is not None:
+        loc = loc.copy()
+        loc_lemmas = [cur_loc.lemma_ for cur_loc in loc]
+        for i in range(len(svo)):
+            svo[i][0] = [token for token in svo[i][0] if token.lemma_ not in loc_lemmas]
     return svo
+
+#%%
+def remove_clo_from_loc(clo, loc):
+    if clo is not None and loc is not None:
+        clo = clo.copy()
+        loc = loc.copy()
+        clo_lemmas = [cur_clo.lemma_ for cur_clo in clo]
+        loc = [token for token in loc if token.lemma_ not in clo_lemmas]
+    if loc is not None:
+        loc = [token for token in loc if token.text not in ("in", "on") and not token.is_stop]
+        if len(loc) == 0:
+            return None
+    return loc
 
 #%%
 def get_vectors(svo_s1, svo_s2, loc_s1, loc_s2, clo_s1, clo_s2, pairID, we_dim=300):
@@ -154,7 +174,7 @@ if __name__ == "__main__":
 
     full_train_set = train
     for cur_counter in np.arange(20,500,20):
-        #cur_counter = 460
+        cur_counter = 460
         print(cur_counter)
         print(datetime.datetime.now())
         train = full_train_set.iloc[(cur_counter-20) * 1000 : cur_counter * 1000]
@@ -175,15 +195,17 @@ if __name__ == "__main__":
 
         print(datetime.datetime.now())
         print("find SVO sentence 1")
-        data['svo_s1'] = data['nlp_s1'].apply(findSVOs).apply(transform_svo_to_nlp)
+        data['svo_s1'] = data['nlp_s1'].apply(findSVOs).apply(transform_svo_to_nlp).apply(lambda x: x if x == None or len(x) == 1 else None)
         data['string_subj_s1'] = data['svo_s1'].apply(subj_to_string)
         data['string_verb_s1'] = data['svo_s1'].apply(verb_to_string)
         data['string_obj_s1'] = data['svo_s1'].apply(obj_to_string)
         print("find SVO sentence 2")
-        data['svo_s2'] = data['nlp_s2'].apply(findSVOs).apply(transform_svo_to_nlp)
+        data['svo_s2'] = data['nlp_s2'].apply(findSVOs).apply(transform_svo_to_nlp).apply(lambda x: x if x == None or len(x) == 1 else None)
         data['string_subj_s2'] = data['svo_s2'].apply(subj_to_string)
         data['string_verb_s2'] = data['svo_s2'].apply(verb_to_string)
         data['string_obj_s2'] = data['svo_s2'].apply(obj_to_string)
+
+        data = data[~data.svo_s1.isna() & ~data.svo_s2.isna()]
 
         print(datetime.datetime.now())
         print("find Loc sentence 1")
@@ -201,8 +223,11 @@ if __name__ == "__main__":
         data['clo_s2'] = data['nlp_s2'].apply(findClothing)
         data['string_clo_s2'] = data['clo_s2'].apply(doc_to_string)
 
-        data['svo_s1'] = data.apply(lambda x: remove_clo_from_svo(x.clo_s1, x.svo_s1), axis=1)
-        data['svo_s2'] = data.apply(lambda x: remove_clo_from_svo(x.clo_s2, x.svo_s2), axis=1)
+        data['svo_s1'] = data.apply(lambda x: remove_clo_loc_from_svo(x.clo_s1, x.loc_s1, x.svo_s1), axis=1)
+        data['svo_s2'] = data.apply(lambda x: remove_clo_loc_from_svo(x.clo_s2, x.loc_s2, x.svo_s2), axis=1)
+
+        data['loc_s1'] = data.apply(lambda x: remove_clo_from_loc(x.clo_s1, x.loc_s1), axis=1)
+        data['loc_s2'] = data.apply(lambda x: remove_clo_from_loc(x.clo_s2, x.loc_s2), axis=1)
 
         print(datetime.datetime.now())
         print("get embedding vectors")
@@ -213,7 +238,6 @@ if __name__ == "__main__":
 
         prepared_data = np.array([vec for vec in data.vecs if vec is not None])
         print(prepared_data.shape)
-
 
 
 
