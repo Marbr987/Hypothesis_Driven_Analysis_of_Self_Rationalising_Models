@@ -283,6 +283,9 @@ def to_str(tokens):
 
 # find verbs and their subjects / objects to create SVOs, detect passive/active sentences
 def findSVOs(tokens):
+    temp = [tok for tok in tokens if tok.dep_ in SUBJECTS]
+    if len(temp) == 0:
+        return None
     svos = []
     is_pas = _is_passive(tokens)
     verbs = _find_verbs(tokens)
