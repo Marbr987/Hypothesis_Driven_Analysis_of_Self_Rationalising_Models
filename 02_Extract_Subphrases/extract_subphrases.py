@@ -173,20 +173,28 @@ if __name__ == "__main__":
     test = test[test.notnull().apply(all, axis=1)]
 
     full_train_set = train
-    for cur_counter in np.arange(20,500,20):
-        cur_counter = 460
+
+    we_dim = 300
+    data_name = 'dev'
+    if data_name == 'dev':
+        data = dev
+        max_iter = 21
+    elif data_name == 'train':
+        max_iter = 500
+    else:
+        raise ValueError(f"Variable data_name has value {data_name}, but it must be 'train' or 'dev'")
+    print("==================================================")
+    print(f"===================== {data_name} =======================")
+    print("==================================================")
+    for cur_counter in np.arange(20, max_iter, 20):
         print(cur_counter)
         print(datetime.datetime.now())
         train = full_train_set.iloc[(cur_counter-20) * 1000 : cur_counter * 1000]
+        if data_name == 'train':
+            data = train
 
         #%%
         # Word Embedding Dimension
-        we_dim = 300
-        data_name = 'train'
-        if data_name == 'dev':
-            data = dev
-        elif data_name == 'train':
-            data = train
         print(datetime.datetime.now())
         print("find nlp sentence 1")
         data['nlp_s1'] = data['Sentence1'].apply(nlp)
@@ -196,24 +204,16 @@ if __name__ == "__main__":
         print(datetime.datetime.now())
         print("find SVO sentence 1")
         data['svo_s1'] = data['nlp_s1'].apply(findSVOs).apply(transform_svo_to_nlp).apply(lambda x: x if x == None or len(x) == 1 else None)
-        data['string_subj_s1'] = data['svo_s1'].apply(subj_to_string)
-        data['string_verb_s1'] = data['svo_s1'].apply(verb_to_string)
-        data['string_obj_s1'] = data['svo_s1'].apply(obj_to_string)
         print("find SVO sentence 2")
         data['svo_s2'] = data['nlp_s2'].apply(findSVOs).apply(transform_svo_to_nlp).apply(lambda x: x if x == None or len(x) == 1 else None)
-        data['string_subj_s2'] = data['svo_s2'].apply(subj_to_string)
-        data['string_verb_s2'] = data['svo_s2'].apply(verb_to_string)
-        data['string_obj_s2'] = data['svo_s2'].apply(obj_to_string)
 
         data = data[~data.svo_s1.isna() & ~data.svo_s2.isna()]
 
         print(datetime.datetime.now())
         print("find Loc sentence 1")
         data['loc_s1'] = data['nlp_s1'].apply(findLoc)
-        data['string_loc_s1'] = data['loc_s1'].apply(doc_to_string)
         print("find Loc sentence 2")
         data['loc_s2'] = data['nlp_s2'].apply(findLoc)
-        data['string_loc_s2'] = data['loc_s2'].apply(doc_to_string)
 
         print(datetime.datetime.now())
         print("find Clo sentence 1")
@@ -224,10 +224,18 @@ if __name__ == "__main__":
         data['string_clo_s2'] = data['clo_s2'].apply(doc_to_string)
 
         data['svo_s1'] = data.apply(lambda x: remove_clo_loc_from_svo(x.clo_s1, x.loc_s1, x.svo_s1), axis=1)
+        data['string_subj_s1'] = data['svo_s1'].apply(subj_to_string)
+        data['string_verb_s1'] = data['svo_s1'].apply(verb_to_string)
+        data['string_obj_s1'] = data['svo_s1'].apply(obj_to_string)
         data['svo_s2'] = data.apply(lambda x: remove_clo_loc_from_svo(x.clo_s2, x.loc_s2, x.svo_s2), axis=1)
+        data['string_subj_s2'] = data['svo_s2'].apply(subj_to_string)
+        data['string_verb_s2'] = data['svo_s2'].apply(verb_to_string)
+        data['string_obj_s2'] = data['svo_s2'].apply(obj_to_string)
 
         data['loc_s1'] = data.apply(lambda x: remove_clo_from_loc(x.clo_s1, x.loc_s1), axis=1)
+        data['string_loc_s1'] = data['loc_s1'].apply(doc_to_string)
         data['loc_s2'] = data.apply(lambda x: remove_clo_from_loc(x.clo_s2, x.loc_s2), axis=1)
+        data['string_loc_s2'] = data['loc_s2'].apply(doc_to_string)
 
         print(datetime.datetime.now())
         print("get embedding vectors")
@@ -242,6 +250,13 @@ if __name__ == "__main__":
 
 
         prepared_data = pd.DataFrame(prepared_data)
-        prepared_data.to_csv('prepared_data/subphrase_vectors_' + str(cur_counter) + data_name + '.csv', sep=';')
-        data[["pairID", "string_subj_s1", "string_verb_s1", "string_obj_s1", "string_loc_s1", "string_clo_s1",
-              "string_subj_s2", "string_verb_s2", "string_obj_s2", "string_loc_s2", "string_clo_s2"]].to_csv('prepared_data/subphrases_' + str(cur_counter) + data_name + '.csv')
+        if data_name == "train":
+            prepared_data.to_csv('prepared_data/subphrase_vectors_' + str(cur_counter) + data_name + '.csv', sep=';')
+            data[["pairID", "string_subj_s1", "string_verb_s1", "string_obj_s1", "string_loc_s1", "string_clo_s1",
+                  "string_subj_s2", "string_verb_s2", "string_obj_s2", "string_loc_s2", "string_clo_s2"]].to_csv('prepared_data/subphrases_' + str(cur_counter) + data_name + '.csv')
+        elif data_name == "dev":
+            prepared_data.to_csv('prepared_data/subphrase_vectors_' + data_name + '.csv', sep=';')
+            data[["pairID", "string_subj_s1", "string_verb_s1", "string_obj_s1", "string_loc_s1", "string_clo_s1",
+                  "string_subj_s2", "string_verb_s2", "string_obj_s2", "string_loc_s2", "string_clo_s2"]].to_csv('prepared_data/subphrases_' + data_name + '.csv')
+        else:
+            raise ValueError(f"Variable data_name has value {data_name}, but it must be 'train' or 'dev'")

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="feature: add script for learning BN parameters">
-      <change afterPath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters.py" afterDir="false" />
+    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="feature: Adaption for Vers 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/01_GPT3_Explanations/Produce_GPT3_Explanations.py" beforeDir="false" afterPath="$PROJECT_DIR$/01_GPT3_Explanations/Produce_GPT3_Explanations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.py" beforeDir="false" afterPath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/03_Bayesian_Network/Evaluate_BN_Performance.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/03_Bayesian_Network/Evaluate_BN_Performance.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/03_Bayesian_Network/Learn_BN_Parameters.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/03_Bayesian_Network/Learn_BN_Parameters.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/04_BN_Explanations/generate_template_explanations.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/04_BN_Explanations/generate_template_explanations.ipynb" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Jupyter Notebook" />
         <option value="Python Script" />
+        <option value="Jupyter Notebook" />
       </list>
     </option>
   </component>
@@ -33,14 +34,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "settings.editor.selected.configurable": "preferences.lookFeel"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Python.learn_BN_parameters">
     <configuration name="Produce_GPT3_Explanations" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Code" />
@@ -133,6 +134,12 @@
     <MESSAGE value="feature: Add external script for extract SVO structures" />
     <MESSAGE value="feature: Evaluate subphrase extraction on 20 random samples" />
     <MESSAGE value="feature: add script for learning BN parameters" />
-    <option name="LAST_COMMIT_MESSAGE" value="feature: add script for learning BN parameters" />
+    <MESSAGE value="feature: adapt script for learning BN parameters for training data" />
+    <MESSAGE value="feature: add script for evaluating performance" />
+    <MESSAGE value="feature: add script for generating template-like explanations" />
+    <MESSAGE value="feature: Vers 2 that only extracts single SVO but multiple locs and clos" />
+    <MESSAGE value="feature: Add filename variable to switch between different models" />
+    <MESSAGE value="feature: Adaption for Vers 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="feature: Adaption for Vers 2" />
   </component>
 </project>
