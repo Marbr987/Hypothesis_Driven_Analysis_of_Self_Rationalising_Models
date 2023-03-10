@@ -15,10 +15,10 @@ def predict_y_from_z(z):
         res = z.apply(predict_y_from_z, axis=1)
         return res.to_numpy()
     else:
-        if all([z[i] == 'nan' or pd.isnull(z[i]) or z[i] == 'entailment' for i in range(25)]):
-            return 'entailment'
-        elif any(z == 'contradiction'):
+        if any(z == 'contradiction'):
             return 'contradiction'
+        elif all([z[i] == 'nan' or pd.isnull(z[i]) or z[i] == 'entailment' for i in (0,6,12,18,24)]) and all(z != 'contradiction'):
+            return 'entailment'
         elif any(z == 'neutral') and all(z != 'contradiction'):
             return 'neutral'
         else:
@@ -150,11 +150,12 @@ if __name__ == "__main__":
 
     amount_training_data = 480 # min 40, max 480
     batch_size= amount_training_data * 1000
-    em_iter = 140
-    mlp_iter = 100
-    size_hidden_layers = (200, 200, 50, 30, 30)
+    em_iter = 20
+    mlp_iter = 50
+    size_hidden_layers = (200, 200, 50, 30)
     str_size_hidden = '_'.join([str(i) for i in size_hidden_layers])
-    folder_name = 'MLP_Classifiers_' + str(amount_training_data) + 'k_training_' + str(em_iter) + '_iter_' + 'NN_size_' + str_size_hidden
+    folder_name = 'vers1/MLP_Classifiers_' + str(amount_training_data) + 'k_training_' + str(em_iter) + '_iter_' + 'NN_size_' + str_size_hidden
+
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
     data_prepared = pd.read_csv("../02_Extract_Subphrases/prepared_data/subphrase_vectors_20train.csv", sep=";")
