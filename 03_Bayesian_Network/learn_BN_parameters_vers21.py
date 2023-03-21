@@ -22,14 +22,12 @@ def predict_y_from_z(z):
         # If any z is 'contradiction' -> output class 'contradiction'
         if any(z == 'contradiction'):
             return 'contradiction'
-        # Else if all non-mixed hidden variables are 'entailment' an -> output class 'entailment'
-        elif all([z[i] == 'nan' or pd.isnull(z[i]) or z[i] == 'entailment' for i in non_mixed_pairs_indices]):
+        # Else if all subphrases of sentence 2 are entailed by any subphrase of sentence 1 -> output class 'entailment'
+        elif all([any([z[i] == 'entailment' for i in subphrase_indices]) or all([z[i] == 'nan' or pd.isnull(z[i]) for i in subphrase_indices]) for subphrase_indices in Sentence2_indices]):
             return 'entailment'
         # Else output class 'neutral'
-        elif any(z == 'neutral'):
-            return 'neutral'
         else:
-            raise ValueError(f"z can only have values 'entailment', 'contradiction', or 'neutral' but is {z}")
+            return 'neutral'
 
 def most_likely_heuristic(clf, y_hat, not_nan, predicted_y, preds, log_prob):
 
@@ -38,18 +36,31 @@ def most_likely_heuristic(clf, y_hat, not_nan, predicted_y, preds, log_prob):
 
         # Should have predicted 'entailment'
         if y_hat == 'entailment':
-            # If class is entailment, all non-mixed-variables must be of class 'entailment'
-            preds[[True if i in non_mixed_pairs_indices and not_nan[i] else False for i in range(len(use_z_values))]] = 'entailment'
+            # For entailment -> each subphrase of Sent.2 must be caused by at least one subphrase of Sent.1
+            # Choose the least expensive change in terms of log-lik.
+
             # No hidden variable can have value 'contradiction'
-            if predicted_y == 'contradiction':
-                for i in np.where(pd.Series(preds) == 'contradiction')[0]:
-                    if not_nan[i]:
-                        swapping_cost_ent = log_prob[i, y_mapping[preds[i]]] - log_prob[i][y_mapping['entailment']]
-                        swapping_cost_neutr = log_prob[i, y_mapping[preds[i]]] - log_prob[i,y_mapping['neutral']]
-                        if swapping_cost_neutr > swapping_cost_ent:
-                            preds[i] = 'entailment'
-                        else:
-                            preds[i] = 'neutral'
+            for i in np.where(pd.Series(preds) == 'contradiction')[0]:
+                if not_nan[i]:
+                    swapping_cost_ent = log_prob[i, y_mapping[preds[i]]] - log_prob[i][y_mapping['entailment']]
+                    swapping_cost_neutr = log_prob[i, y_mapping[preds[i]]] - log_prob[i,y_mapping['neutral']]
+                    if swapping_cost_neutr > swapping_cost_ent:
+                        preds[i] = 'entailment'
+                    else:
+                        preds[i] = 'neutral'
+
+            for subphrase_indices in Sentence2_indices:
+                if not any([pred == 'entailment' for pred in preds[[True if i in subphrase_indices and not_nan[i] else False for i in range(len(use_z_values))]]]):
+                    best_i = 0
+                    best_swapping_cost = np.inf
+                    for i in subphrase_indices:
+                        if not_nan[i]:
+                            swapping_cost = log_prob[i,y_mapping[preds[i]]] - log_prob[i,y_mapping['entailment']]
+                            if swapping_cost < best_swapping_cost:
+                                best_i = i
+                                best_swapping_cost = swapping_cost
+                    preds[best_i] = 'entailment'
+
 
         # Should have predicted contradiction -> change least expensive one to contradiction
         elif y_hat == 'contradiction':
@@ -75,26 +86,34 @@ def most_likely_heuristic(clf, y_hat, not_nan, predicted_y, preds, log_prob):
                             preds[i] = 'entailment'
                         else:
                             preds[i] = 'neutral'
-                if not any([preds[i] == 'neutral' for i in non_mixed_pairs_indices]):
-                    best_i = 0
+                if all([any([preds[i] == 'entailment' for i in subphrase_indices]) or all([preds[i] == 'nan' or pd.isnull(preds[i]) for i in subphrase_indices]) for subphrase_indices in Sentence2_indices]):
                     best_swapping_cost = np.inf
-                    for i in non_mixed_pairs_indices:
-                        if not_nan[i]:
-                            swapping_cost = log_prob[i, y_mapping[preds[i]]] - log_prob[i, y_mapping['neutral']]
+                    for subphrase_indices in Sentence2_indices:
+                        if any([pred == 'entailment' for pred in preds[[True if i in subphrase_indices and not_nan[i] else False for i in range(len(use_z_values))]]]):
+                            swapping_cost = 0
+                            for i in subphrase_indices:
+                                if not_nan[i]:
+                                    swapping_cost += log_prob[i,y_mapping[preds[i]]] - log_prob[i,y_mapping['neutral']]
                             if swapping_cost < best_swapping_cost:
-                                best_i = i
                                 best_swapping_cost = swapping_cost
-                    preds[best_i] = 'neutral'
+                                best_subphrase_indices = subphrase_indices
+                    for i in best_subphrase_indices:
+                        if not_nan[i]:
+                            preds[i] = 'neutral'
             elif predicted_y == 'entailment':
-                best_i = 0
                 best_swapping_cost = np.inf
-                for i in non_mixed_pairs_indices:
-                    if not_nan[i]:
-                        swapping_cost = log_prob[i, y_mapping[preds[i]]] - log_prob[i, y_mapping['neutral']]
+                for subphrase_indices in Sentence2_indices:
+                    if any([pred == 'entailment' for pred in preds[[True if i in subphrase_indices and not_nan[i] else False for i in range(len(use_z_values))]]]):
+                        swapping_cost = 0
+                        for i in subphrase_indices:
+                            if not_nan[i]:
+                                swapping_cost += log_prob[i,y_mapping[preds[i]]] - log_prob[i,y_mapping['neutral']]
                         if swapping_cost < best_swapping_cost:
-                            best_i = i
                             best_swapping_cost = swapping_cost
-                preds[best_i] = 'neutral'
+                            best_subphrase_indices = subphrase_indices
+                for i in best_subphrase_indices:
+                    if not_nan[i]:
+                        preds[i] = 'neutral'
     log_lik = 0
     for i in range(len(use_z_values)):
         if not_nan[i]:
@@ -106,7 +125,8 @@ def estimate_z_and_log_lik(clf, y_hat, data, not_nan):
     preds = np.empty((y_hat.shape[0], len(use_z_values)), dtype=np.dtype('U25'))
     preds[:,:] = np.nan
     for i in range(len(use_z_values)):
-        preds[not_nan[:,i], i] = clf[i].predict(data[not_nan[:,i],:][:, cols[i]])
+        probs = clf[i].predict_proba(data[not_nan[:,i],:][:, cols[i]])
+        preds[not_nan[:,i], i] = [np.random.choice(clf[i].classes_, 1, p=probs[k])[0] for k in range(probs.shape[0])]
     predicted_y = predict_y_from_z(preds)
     print(f"Current Train Accuracy Before Adaptions: {np.mean(predicted_y == y_hat)}")
     log_prob = np.zeros((len(use_z_values), 3, n))
@@ -152,7 +172,7 @@ def em_algorithm(clf, y_hat, data, not_nan, iter, dev_data, y_dev, not_nan_dev):
             print(f"The following models are not updated because target y does not contain all classes: {models_not_updated}")
         y_pred_dev = predict_y_from_z(z_dev)
         y_pred_train = predict_y_from_z(z)
-        print(f"Current Train Accuracy After Adaptions: {np.mean(y_hat == y_pred_train)}")
+        print(f"Current Train Accuracy After Adaptions (should be 1): {np.mean(y_hat == y_pred_train)}")
         dev_acc += [np.mean(y_pred_dev == y_dev), ]
         print(f"Current Dev Accuracy: {dev_acc[-1]}")
 
@@ -171,16 +191,24 @@ if __name__ == "__main__":
     test = test[test.notnull().apply(all, axis=1)]
 
     amount_training_data = 480 # min 40, max 480
-    batch_size= amount_training_data * 1000
-    em_iter = 40
-    mlp_iter = 50
-    size_hidden_layers = (200, 200, 50, 50, 30, 30)
+    batch_size = amount_training_data * 1000
+    em_iter = 200
+    mlp_iter = 30
+    size_hidden_layers = (200, 200, 50, 50, 30)
     str_size_hidden = '_'.join([str(i) for i in size_hidden_layers])
-    use_z_values = (0,3,4,6,8,9,12,13,14,15,16,17,18,19,20,21,22,23,24)
+    use_z_values = (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24)
     # Indices in terms of z for all hidden variables that are not mixed, e.g. Subject1-Subject2, Verb1-Verb2, etc.
     non_mixed_pairs_indices = [i for i in range(len(use_z_values)) if use_z_values[i] in (0,6,12,18,24)]
 
-    folder_name = 'vers3/MLP_Classifiers_' + str(amount_training_data) + 'k_training_' + str(em_iter) + '_iter_' + 'NN_size_' + str_size_hidden
+    # Indices for all z variables influenced by Subject2 (Verb2, Object2 etc. respectively) (e.g. Subject1-Subject2)
+    Subj2_indices = [i for i in range(len(use_z_values)) if use_z_values[i] in (0, 5, 10, 15, 20)]
+    Verb2_indices = [i for i in range(len(use_z_values)) if use_z_values[i] in (1, 6, 11, 16, 21)]
+    Obj2_indices = [i for i in range(len(use_z_values)) if use_z_values[i] in (2, 7, 12, 17, 22)]
+    Loc2_indices = [i for i in range(len(use_z_values)) if use_z_values[i] in (3, 8, 13, 18, 23)]
+    Clo2_indices = [i for i in range(len(use_z_values)) if use_z_values[i] in (4, 9, 14, 19, 24)]
+    Sentence2_indices = [Subj2_indices, Verb2_indices, Obj2_indices, Loc2_indices, Clo2_indices]
+
+    folder_name = 'vers21/MLP_Classifiers_' + str(amount_training_data) + 'k_training_' + str(em_iter) + '_iter_' + 'NN_size_' + str_size_hidden
     if not os.path.exists(folder_name):
         os.makedirs(folder_name)
     data_prepared = pd.read_csv("../02_Extract_Subphrases/prepared_data/subphrase_vectors_20train.csv", sep=";")
@@ -231,25 +259,36 @@ if __name__ == "__main__":
     for ind in data_index:
         label = original_dataset.loc[ind].gold_label
         y_hat += [label, ]
+
         if label == "entailment":
-            temp_ent = ["entailment" if i in non_mixed_pairs_indices else "neutral" for i in range(len(use_z_values))]
+            temp_ent = np.array(["neutral"] * len(use_z_values), dtype=np.dtype('U25'))
+            ent_indices = list()
+            for subphrase_indices in Sentence2_indices:
+                ent_indices += np.random.choice(subphrase_indices, np.random.randint(1,len(subphrase_indices)+1), replace=False).tolist()
+            temp_ent[ent_indices] = "entailment"
             res += [temp_ent, ]
+
         elif label == "neutral":
-            temp_neutr = [np.random.choice(["entailment", "neutral"], 1)[0] if i in non_mixed_pairs_indices else "neutral" for i in range(len(use_z_values))]
-            if any(temp_neutr[i] == "neutral" for i in non_mixed_pairs_indices):
-                j = np.random.choice(non_mixed_pairs_indices, 1)[0]
-                temp_neutr[j] = "neutral"
+            temp_neutr = [np.random.choice(["entailment", "neutral"], 1)[0] for i in range(len(use_z_values))]
+            ent_mask = [any([temp_neutr[i] == 'entailment' for i in subphrase_indices]) for subphrase_indices in Sentence2_indices]
+            if all(ent_mask):
+                for i in Sentence2_indices[np.random.choice(np.where(ent_mask)[0], 1)[0]]:
+                    temp_neutr[i] = "neutral"
             res += [temp_neutr, ]
+
         elif label == "contradiction":
             temp_contr = np.random.choice(["entailment", "neutral", "contradiction"], size=len(use_z_values)).tolist()
             if all([temp_contr != "contradiction" for i in range(len(use_z_values))]):
-                j = np.random.choice(non_mixed_pairs_indices, 1)[0]
+                j = np.random.choice(range(len(use_z_values)), 1)[0]
                 temp_contr[j] = "contradiction"
             res += [temp_contr, ]
+
         else:
             raise ValueError(f"label must either be entailment, contradiction, or neutral. Not {label}")
+
     z = np.array(res)
     y_hat = np.array(y_hat)
+    print(f"Accuracy of initial z values (should be 1): {np.mean(predict_y_from_z(z) == y_hat)}")
 
     # Initialise y_dev
     print(datetime.datetime.now())

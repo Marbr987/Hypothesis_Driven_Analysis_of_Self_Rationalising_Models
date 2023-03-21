@@ -24,7 +24,7 @@ if __name__ == "__main__":
     test = pd.read_csv('../Input_Data/e-SNLI/dataset/esnli_test.csv')
     test = test[test.notnull().apply(all, axis=1)]
 
-    i = 7
+    i = 10
     index_range = [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, dev.shape[0]]
     np.random.seed(index_range[i])
     dev_indices = range(index_range[i-1],index_range[i])
@@ -39,8 +39,10 @@ if __name__ == "__main__":
     labels = list()
     explanations = list()
     openai.api_key = os.getenv("OPENAI_API_KEY")
-    openai.organization = "org-qDPK8eQnXWK6wigTDVoWmU9B"
+    openai.organization = "org-zHIEQdY05F58L0NE73T46O4K"
     for k in range(dev_prepared.shape[0]):
+        if k % 100 == 0:
+            print(k)
         response = openai.Completion.create(
             engine='text-davinci-003',
             prompt = dev_prepared['prompts_instruct_GPT'].iloc[k],
@@ -50,7 +52,7 @@ if __name__ == "__main__":
         )
         labels += [response.choices[0].text.split("\nExplanation: ")[0].strip(),]
         explanations += [response.choices[0].text.split("\nExplanation: ")[1], ]
-        time.sleep(4)
+        time.sleep(6)
     dev_prepared["pred_explanation"] = explanations
     dev_prepared["pred_label"] = labels
     dev_prepared.to_csv('prepared_data/GPT3_explanations' + str(i) + '.csv', sep=';')

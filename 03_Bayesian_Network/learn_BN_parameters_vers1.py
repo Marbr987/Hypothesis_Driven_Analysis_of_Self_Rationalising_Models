@@ -75,7 +75,7 @@ def most_likely_heuristic(clf, y_hat, not_nan, predicted_y, preds, log_prob):
                             preds[i] = 'entailment'
                         else:
                             preds[i] = 'neutral'
-                if not any([preds[i] == 'neutral' for i in range(len(use_z_values))]):
+                if not any([preds[i] == 'neutral' for i in non_mixed_pairs_indices]):
                     best_i = 0
                     best_swapping_cost = np.inf
                     for i in non_mixed_pairs_indices:
