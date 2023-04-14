@@ -73,6 +73,8 @@ def estimate_z_and_log_lik(clf, y_hat, data, not_nan, n_samples):
         probs[not_nan[:,i],i,:] = clf[i].predict_proba(data[not_nan[:,i], :][:, cols[i]])
 
     def generate_z_samples(k):
+        if k % 20000 == 0 and k != 0:
+            print(f"{round(k / y_hat.shape[0] * 100, 2)}% of Z samples generated")
         n_samples_missing = n_samples
         res = np.empty((n_samples, len(use_z_values)), dtype=np.dtype('U25'))
         res[:,:] = np.nan
@@ -89,7 +91,7 @@ def estimate_z_and_log_lik(clf, y_hat, data, not_nan, n_samples):
         res = temp[:n_samples,:]
         return res
 
-    preds = np.vstack(tuple(map(generate_z_samples, range(y_hat.shape[0]))))
+    preds = np.vstack(tuple([generate_z_samples(j) for j in range(y_hat.shape[0])]))
 
     # Train accuracy
     z_train_temp = np.empty((y_hat.shape[0], len(use_z_values)), dtype=np.dtype('U25'))
@@ -159,14 +161,14 @@ if __name__ == "__main__":
     test = pd.read_csv('../Input_Data/e-SNLI/dataset/esnli_test.csv')
     test = test[test.notnull().apply(all, axis=1)]
 
-    n_samples = 12
-    continue_training = True
+    n_samples = 8 # for training 300, sample = 12. For training 60, sample = 60. For training 480, sample = 8.
+    continue_training = False
     prev_iter = 10
-    amount_training_data = 300 # min 40, max 480
-    batch_size = amount_training_data * 100
-    em_iter = 20
-    mlp_iter = 20
-    size_hidden_layers = (200, 200, 50, 50, 30)
+    amount_training_data = 480 # min 40, max 480
+    batch_size = amount_training_data * 200
+    em_iter = 15
+    mlp_iter = 10
+    size_hidden_layers = (100, 30)
     str_size_hidden = '_'.join([str(i) for i in size_hidden_layers])
     if not continue_training:
         prev_iter = 0

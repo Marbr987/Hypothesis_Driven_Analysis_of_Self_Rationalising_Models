@@ -175,7 +175,7 @@ if __name__ == "__main__":
     full_train_set = train
 
     we_dim = 300
-    data_name = 'dev'
+    data_name = 'train'
     if data_name == 'dev':
         data = dev
         max_iter = 21
