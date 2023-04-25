@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="feature: Add implementation for stochastic version of EM-algorithm">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters_vers31.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters_vers43.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/05_Evaluation/DeepFool.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/05_Evaluation/create_evaluation_template.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Code.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Code.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="minor changes">
+      <change afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_explanations.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_human_annotations.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_predicted_labels.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/05_Evaluation/z_intervention_large_SSM.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/01_GPT3_Explanations/evaluate_GPT3.py.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/01_GPT3_Explanations/evaluate_GPT3.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.py" beforeDir="false" afterPath="$PROJECT_DIR$/02_Extract_Subphrases/extract_subphrases.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters_vers33.py" beforeDir="false" afterPath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters_vers33.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/04_BN_Explanations/generate_template_explanations.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/04_BN_Explanations/generate_template_explanations.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/05_Evaluation/z_intervention.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/05_Evaluation/z_intervention.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,18 +36,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/marcbraun/Documents/Uni/Master/Semester 4/Master Thesis/Code/03_Bayesian_Network&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/marcbraun/Documents/Uni/Master/Semester 4/Master Thesis/Code/05_Evaluation",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/05_Evaluation" />
       <recent name="$PROJECT_DIR$/03_Bayesian_Network" />
     </key>
   </component>
@@ -203,6 +199,10 @@
     <MESSAGE value="feature: Adaption for Vers 2" />
     <MESSAGE value="feature: Include version with new prediction of y_hat based on z and with different hidden variables z" />
     <MESSAGE value="feature: Add implementation for stochastic version of EM-algorithm" />
-    <option name="LAST_COMMIT_MESSAGE" value="feature: Add implementation for stochastic version of EM-algorithm" />
+    <MESSAGE value="feature: Add evaluation scripts" />
+    <MESSAGE value="feature: New approach with same model for all relationships" />
+    <MESSAGE value="change some model parameters" />
+    <MESSAGE value="minor changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
   </component>
 </project>
