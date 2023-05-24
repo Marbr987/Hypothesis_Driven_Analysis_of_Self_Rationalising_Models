@@ -99,7 +99,8 @@ def estimate_z_and_log_lik(clf, y_hat, data, not_nan, n_samples):
     for i in range(len(use_z_values)):
         z_train_temp[not_nan[:,i], i] = clf[i].predict(data[not_nan[:,i],:][:, cols[i]])
     predicted_y_train_temp = predict_y_from_z(z_train_temp)
-    print(f"Current Train Accuracy Before Adaptions: {np.mean(predicted_y_train_temp == y_hat)}")
+    train_acc = np.mean(predicted_y_train_temp == y_hat)
+    print(f"Current Train Accuracy Before Adaptions: {train_acc}")
 
     # Calculate log-likelihood
     y_mapping = {clf[0].classes_[0]: 0, clf[0].classes_[1]: 1, clf[0].classes_[2]: 2}
@@ -109,12 +110,13 @@ def estimate_z_and_log_lik(clf, y_hat, data, not_nan, n_samples):
     log_lik = np.sum([log_prob[:, y_mapping[predicted_y_train_temp[i]], i] for i in range(n)])
     print(log_lik)
 
-    return preds, log_lik
+    return preds, log_lik, train_acc
 
 
 def em_algorithm(clf, y_hat, data, not_nan, iter, dev_data, y_dev, not_nan_dev, n_samples):
     log_lik = list()
     dev_acc = list()
+    train_acc = list()
     z_dev = np.empty((dev_data.shape[0], len(use_z_values)), dtype=np.dtype('U25'))
     z_dev[:,:] = np.nan
     for k in range(iter):
@@ -125,7 +127,7 @@ def em_algorithm(clf, y_hat, data, not_nan, iter, dev_data, y_dev, not_nan_dev, 
         # E-Step
         print(datetime.datetime.now())
         print("E-Step")
-        z, cur_log_lik = estimate_z_and_log_lik(clf, y_hat, data, not_nan, n_samples)
+        z, cur_log_lik, cur_train_acc = estimate_z_and_log_lik(clf, y_hat, data, not_nan, n_samples)
         log_lik += [cur_log_lik, ]
         print(f'Current log likelihood: {cur_log_lik}')
 
@@ -143,12 +145,13 @@ def em_algorithm(clf, y_hat, data, not_nan, iter, dev_data, y_dev, not_nan_dev, 
             print(f"The following models are not updated because target y does not contain all classes: {models_not_updated}")
         y_pred_dev = predict_y_from_z(z_dev)
         y_pred_train = predict_y_from_z(z)
+        train_acc += [cur_train_acc, ]
         print(f"Current Train Accuracy After Adaptions (should be 1): {np.mean(np.repeat(y_hat, n_samples, axis=0) == y_pred_train)}")
         dev_acc += [np.mean(y_pred_dev == y_dev), ]
         print(f"Current Dev Accuracy: {dev_acc[-1]}")
 
 
-    return clf, z, log_lik, dev_acc
+    return clf, z, log_lik, dev_acc, train_acc
 
 if __name__ == "__main__":
 
@@ -166,9 +169,9 @@ if __name__ == "__main__":
     prev_iter = 10
     amount_training_data = 480 # min 40, max 480
     batch_size = amount_training_data * 200
-    em_iter = 15
+    em_iter = 10
     mlp_iter = 10
-    size_hidden_layers = (100, 30)
+    size_hidden_layers = (200, 50, 30)
     str_size_hidden = '_'.join([str(i) for i in size_hidden_layers])
     if not continue_training:
         prev_iter = 0
@@ -298,7 +301,7 @@ if __name__ == "__main__":
         print(f"Dev Accuracy with initial z values: {np.mean(y_pred_dev == y_dev)}")
 
     # Run EM-algorithm
-    clf, z, log_lik, dev_acc = em_algorithm(clf,
+    clf, z, log_lik, dev_acc, train_acc = em_algorithm(clf,
                                             y_hat,
                                             data,
                                             not_nan,
@@ -318,11 +321,12 @@ if __name__ == "__main__":
 
     # Plot dev accuracy
     plt.figure(2)
-    plt.plot(dev_acc)
+    plt.plot(dev_acc, label="development set")
+    plt.plot(train_acc, label="train set")
+    plt.legend()
     plt.xlabel('Iteration')
     plt.ylabel('Accuracy')
-    plt.title('Accuracy Dev Set EM-Algorithm')
-    plt.savefig(folder_name + '/dev_accuracy.pdf')
+    plt.savefig(folder_name + '/dev_train_accuracy.pdf')
 
     # Save MLP classifiers
     for i in range(len(use_z_values)):

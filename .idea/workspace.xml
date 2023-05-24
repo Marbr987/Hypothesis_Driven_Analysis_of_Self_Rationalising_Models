@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="minor changes">
-      <change afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_explanations.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_human_annotations.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_predicted_labels.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/05_Evaluation/z_intervention_large_SSM.ipynb" afterDir="false" />
+    <list default="true" id="f892e82d-da7b-450c-b15f-d19fd4ee89dc" name="Changes" comment="Feature: Add evaluation of predicted labels, explanations, and human annotations">
+      <change afterPath="$PROJECT_DIR$/06_Playground/playground.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/04_BN_Explanations/generate_template_explanations.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/04_BN_Explanations/generate_template_explanations.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/05_Evaluation/z_intervention.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/05_Evaluation/z_intervention.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters_vers31.py" beforeDir="false" afterPath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters_vers31.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters_vers33.py" beforeDir="false" afterPath="$PROJECT_DIR$/03_Bayesian_Network/learn_BN_parameters_vers33.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/05_Evaluation/evaluate_explanations.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_explanations.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/05_Evaluation/evaluate_human_annotations.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_human_annotations.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/05_Evaluation/evaluate_predicted_labels.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/05_Evaluation/evaluate_predicted_labels.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/05_Evaluation/z_intervention_large_SSM.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/05_Evaluation/z_intervention_large_SSM.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -36,23 +37,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/marcbraun/Documents/Uni/Master/Semester 4/Master Thesis/Code/05_Evaluation",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/marcbraun/Documents/Uni/Master/Semester 4/Master Thesis/Code/05_Evaluation&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/05_Evaluation" />
       <recent name="$PROJECT_DIR$/03_Bayesian_Network" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.learn_BN_parameters_vers33">
+  <component name="RunManager" selected="Python.learn_BN_parameters_vers31">
     <configuration name="Produce_GPT3_Explanations" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Code" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -160,9 +161,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.learn_BN_parameters_vers31" />
         <item itemvalue="Python.learn_BN_parameters_vers33" />
         <item itemvalue="Python.learn_BN_parameters_vers43" />
-        <item itemvalue="Python.learn_BN_parameters_vers31" />
         <item itemvalue="Python.extract_subphrases" />
         <item itemvalue="Python.Produce_GPT3_Explanations" />
       </list>
@@ -203,6 +204,7 @@
     <MESSAGE value="feature: New approach with same model for all relationships" />
     <MESSAGE value="change some model parameters" />
     <MESSAGE value="minor changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="minor changes" />
+    <MESSAGE value="Feature: Add evaluation of predicted labels, explanations, and human annotations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Feature: Add evaluation of predicted labels, explanations, and human annotations" />
   </component>
 </project>
